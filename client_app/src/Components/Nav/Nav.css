@@ -1,0 +1,43 @@
+
+.nav-wrapper {
+    width: 100ew;
+    /* background-color: red; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10%;
+    margin-top: 2%;
+}
+
+.home {
+    background-color: darkcyan;
+    padding: 10px;
+    border-radius: 5%;
+}
+
+.home:hover {
+    cursor: pointer;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.my-items {
+    background-color: darkcyan;
+    padding: 10px;
+    border-radius: 5%;
+}
+
+.my-items:hover {
+    cursor: pointer;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.login {
+    background-color: darkcyan;
+    padding: 10px;
+    border-radius: 5%;
+}
+
+.login:hover {
+    cursor: pointer;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+}

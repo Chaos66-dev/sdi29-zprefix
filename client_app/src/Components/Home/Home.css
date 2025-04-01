@@ -1,0 +1,13 @@
+
+.home-wrapper {
+    width: 100vw;
+    /* background-color: lightblue; */
+    margin-top: 2%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: start;
+    align-items: center;
+    margin-left: 2%;
+    margin-right: 2%;
+}

@@ -7,7 +7,7 @@ exports.up = function(knex) {
         table.increments('id')
         table.string('FirstName', 50)
         table.string('LastName', 50)
-        table.string('Userame', 50)
+        table.string('Username', 50)
         table.string('Password', 100)
     })
 };

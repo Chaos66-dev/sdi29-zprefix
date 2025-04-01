@@ -1,0 +1,41 @@
+
+
+.details-wrapper {
+    display: flex;
+    margin-top: 2%;
+    width: 95vw;
+    flex-direction: column;
+    align-items: start;
+    background-color: darkslategrey;
+    gap: 20px;
+    margin-left: 2%;
+    margin-right: 2%;
+    border-radius: 3%;
+}
+
+.id {
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 2%;
+}
+
+.name {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.description {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.quantity {
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+.user {
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+}

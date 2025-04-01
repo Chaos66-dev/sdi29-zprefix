@@ -1,0 +1,39 @@
+
+
+.item-card-wrapper {
+    background-color: darkslategrey;
+    border-radius: 3%;
+    width: 300px;
+    height: 400px;
+    display: grid;
+    grid-template-rows: 2fr 5fr 2fr 2fr;
+    justify-content: center;
+    align-items: center;
+}
+
+.item-card-wrapper:hover {
+    cursor: pointer;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.item-id-name {
+    grid-row: 1;
+    margin: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.item-description {
+    grid-row: 2;
+    margin: 2%;
+}
+.item-quantity {
+    grid-row: 3;
+    margin: 2%;
+}
+.item-user {
+    grid-row: 4;
+    margin: 2%;
+}

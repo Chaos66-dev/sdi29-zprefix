@@ -1,0 +1,14 @@
+
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-left: 2%;
+    margin-right: 2%;
+    margin-top: 3%;
+    background-color: darkslategrey;
+    padding-top: 1%;
+    justify-content: flex-start;
+    align-items: center;
+}
