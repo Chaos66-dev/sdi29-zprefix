@@ -12,7 +12,7 @@ function Home() {
         fetch(`http://localhost:4000/items/1`)
             .then(res => res.json())
             .then(data => setItems(data))
-    })
+    }, [])
 
     return (
         <div>

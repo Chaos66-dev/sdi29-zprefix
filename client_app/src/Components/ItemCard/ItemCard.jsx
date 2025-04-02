@@ -5,12 +5,65 @@ import InventoryContext from '../../Context/InventoryContext.jsx'
 
 function ItemCard({ item }) {
     const navigate = useNavigate()
-    const { setCurrItem } = useContext(InventoryContext)
+    const { setCurrItem, setView } = useContext(InventoryContext)
     const [ description, setDescription ] = useState('')
+    const [ edit, setEdit ] = useState(false)
+    const [ itmnm, setItmnm ] = useState(item.ItemName)
+    const [ qntty, setQntty ] = useState(item.Quantity)
+    const [ uid, setUid ] = useState(item.UserId)
 
     function handleItemCardClick(item) {
-        setCurrItem(item)
-        navigate('/details')
+        if (!edit) {
+            setCurrItem(item)
+            navigate('/details')
+        }
+    }
+
+    function handleEditClick() {
+        if (edit == false) {
+            setEdit(true)
+        } else {
+            setEdit(false)
+            fetch('http://localhost:4000/items', {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    id: item.id,
+                    UserId: uid,
+                    ItemName: itmnm,
+                    Description: description,
+                    Quantity: qntty
+                })
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error('Error sending updates to backend database')
+                    }
+                })
+                .catch(error => alert(error))
+        }
+    }
+
+    function handleDeleteClick() {
+        fetch('http://localhost:4000/items', {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                id: item.id
+            })
+        })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Error deleting this item')
+                }
+                setView('user')
+                navigate('/')
+            })
+            .catch(error => alert(error))
     }
 
     useEffect(() => {
@@ -22,24 +75,72 @@ function ItemCard({ item }) {
     }, [])
 
     return (
-        <div className='item-card-wrapper' onClick={() => handleItemCardClick(item)}>
-            <div className="item-id-name">
-                <div>
-                    {item.id}.
-                </div>
-                <div>
-                    {item.ItemName}
-                </div>
+        <div className='item-card-wrapper'>
+            <div className="clickable-wrapper" onClick={() => handleItemCardClick(item)}>
+                <div className="item-id-name">
+                    <div>
+                        {item.id}
+                    </div>
+                    <div>
+                        {edit ?
+                            <input type="text"
+                                    name="itemname"
+                                    id="itemname"
+                                    placeholder='Item Name'
+                                    value={itmnm}
+                                    onChange={(event) => setItmnm(event.target.value)} />
+                        :
+                            itmnm
+                        }
+                    </div>
 
+                </div>
+                <div className="item-description">
+                    {edit ?
+                        <input type="text"
+                                name="description"
+                                id="description"
+                                placeholder='Description'
+                                value={description}
+                                onChange={(event) => setDescription(event.target.value)} />
+                    :
+                        description
+                    }
+                </div>
+                <div className="item-quantity">
+                    {edit ?
+                        <input type="number"
+                                name="quantity"
+                                id="quantity"
+                                placeholder='Quantity'
+                                value={qntty}
+                                onChange={(event) => setQntty(event.target.value)} />
+                    :
+                        'Quantity: ' + qntty
+                    }
+                </div>
+                <div className="item-user">
+                    {edit ?
+                        <input type="number"
+                                name="uid"
+                                id="uid"
+                                placeholder='User Id'
+                                value={uid}
+                                onChange={(event) => setUid(event.target.value)} />
+                    :
+                        'Associated User Id: ' + uid
+                    }
+                </div>
             </div>
-            <div className="item-description">
-                {description}
-            </div>
-            <div className="item-quantity">
-                Quantity: {item.Quantity}
-            </div>
-            <div className="item-user">
-                Associated User: {item.UserId}
+            <div className="actions">
+                <button type="button" onClick={handleEditClick}>
+                    {!edit ?
+                        'Edit'
+                    :
+                       'Submit'
+                    }
+                </button>
+                <button type="button" onClick={handleDeleteClick}>Delete</button>
             </div>
         </div>
     )
