@@ -7,8 +7,15 @@
     margin-left: 2%;
     margin-right: 2%;
     margin-top: 3%;
-    background-color: darkslategrey;
-    padding-top: 1%;
+    padding-top: 2%;
+    padding-bottom: 2%;
     justify-content: flex-start;
+    align-items: center;
+}
+
+.user-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
     align-items: center;
 }

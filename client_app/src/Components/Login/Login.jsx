@@ -2,11 +2,15 @@ import './Login.css'
 import { useContext, useState } from 'react'
 import InventoryContext from '../../Context/InventoryContext.jsx'
 import { useNavigate } from 'react-router-dom'
+import CreateUser from '../CreateUser/CreateUser.jsx'
+import EditUser from '../EditUser/EditUser.jsx'
+import DeleteUser from '../DeleteUser/DeleteUser.jsx'
 
 function Login() {
     const { currUser, setCurrUser, setView } = useContext(InventoryContext)
     const [usrnm, setUsrnm] = useState('')
     const [psswd, setPsswd] = useState('')
+    const [action, setAction] = useState('')
     const navigate = useNavigate()
 
     function handleLogin() {
@@ -64,10 +68,29 @@ function Login() {
                 <button type="submit" onClick={handleLogin}>Login</button>
             </div>
             <div className="user-actions">
-                <div className="create-user"></div>
-                <div className="edit-user"></div>
-                <div className="delete-user"></div>
+                <div className="create-user">
+                    <button type="button" onClick={() => setAction('create')}>Create User</button>
+                </div>
+                <div className="edit-user">
+                    <button type="button" onClick={() => setAction('edit')}>Edit User</button>
+                </div>
+                <div className="delete-user">
+                    <button type="button" onClick={() => setAction('delete')}>Delete User</button>
+                </div>
             </div>
+
+            {
+                action == '' ? (
+                    <></>
+                ) : action == 'create' ? (
+                    <CreateUser setAction={setAction}/>
+                ) : action == 'edit' ? (
+                    <EditUser setAction={setAction}/>
+                ) : action == 'delete' ? (
+                    <DeleteUser setAction={setAction}/>
+                ) : <></>
+            }
+
         </div>
     )
 }

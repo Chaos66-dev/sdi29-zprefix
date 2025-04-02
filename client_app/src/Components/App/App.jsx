@@ -15,7 +15,6 @@ function App() {
     fetch(`http://localhost:4000/items/${currUser.id}`)
       .then(res => res.json())
       .then(data => {
-        console.log(data)
         setItems(data)
       })
   }, [])

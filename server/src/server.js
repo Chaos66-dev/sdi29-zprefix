@@ -10,6 +10,8 @@ const cors = require('cors')
 server.use(express.json())
 server.use(cors())
 
+const SERVER_ERROR = {error: 'Internal Server Error'}
+
 server.get('/', (req, res) => {
     res.status(200).json({message: "I am working"})
 })
@@ -38,7 +40,7 @@ server.post('/login/', async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: 'Internal Server Error'})
+        res.status(500).json(SERVER_ERROR)
     }
 })
 
@@ -68,9 +70,81 @@ server.get('/users/:id', async (req, res) => {
         res.status(500).json({error: "Internal Server Error"})
     }
 })
+
 // Post /users
+server.post('/users', async (req, res) => {
+    const { FirstName, LastName, Username, Password } = req.body
+    if (FirstName == '' ||
+        LastName == '' ||
+        Username == '' ||
+        Password == ''
+    ) {
+        res.status(400).json({error: 'Please provide values for all fields'})
+    }
+
+    try {
+        const add_user = await db('users').insert({ FirstName, LastName, Username, Password }).returning('id')
+        // console.log(add_user)
+        if (add_user.length > 0){
+            res.status(201).json(add_user)
+        } else {
+            res.status(404).json({error: 'Error inserting user'})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(SERVER_ERROR)
+    }
+})
 // Patch /users
+server.patch('/users', async (req, res) => {
+    const { FirstName, LastName, Username, Password } = req.body
+    const id = parseInt(req.body.UserId)
+    if (isNaN(id) || id < 1) {
+        res.status(400).json({error: 'Please provide the id of the user you want to update'})
+    }
+    let updates = {}
+    if (FirstName != '') updates.FirstName = FirstName
+    if (LastName != '') updates.LastName = LastName
+    if (Username != '') updates.Username = Username
+    if (Password != '') updates.Password = Password
+
+    try {
+        const patch = await db('users').where('id', id).update(updates)
+
+        if (patch > 0) {
+            res.status(201).json(patch)
+        } else {
+            res.status(404).json({error: 'Error updating this user'})
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(SERVER_ERROR)
+    }
+
+})
 // Delete /users
+server.delete('/users', async (req, res) => {
+    const id = parseInt(req.body.UserId)
+    if (isNaN(id) || id < 1) {
+        res.status(400).json({error: 'Please provide the id of the user you want to delete'})
+    }
+
+    try {
+        const del = await db('users').where('id', id).del()
+
+        if (del == 1) {
+            res.status(201).json(del)
+        } else {
+            res.status(404).json({error: 'Error deleting this user'})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(SERVER_ERROR)
+    }
+})
+
+// -------------------------------------------------------------------------------------------
 
 // Get /items
 server.get('/items/:id', async (req, res) => {
@@ -94,10 +168,26 @@ server.get('/items/:id', async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        res.status(500).json({error: 'Internal Server Error'})
+        res.status(500).json(SERVER_ERROR)
     }
 })
+
 // Post /items
+server.post('/items', async (req, res) => {
+    const { UserId, ItemName, Description, Quantity } = req.body
+
+    try {
+        const add_item = await db('items').insert({ UserId, ItemName, Description, Quantity }).returning('id')
+        if (add_item.length > 0) {
+            res.status(201).json(add_item)
+        } else {
+            res.status(404).json({error: 'Error inserting this item'})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(SERVER_ERROR)
+    }
+})
 // Patch /items
 // Delete /items
 
