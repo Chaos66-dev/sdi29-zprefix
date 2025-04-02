@@ -11,6 +11,7 @@ function App() {
   const { currUser } = useContext(InventoryContext)
   const { setItems } = useContext(InventoryContext)
 
+
   useEffect(() => {
     fetch(`http://localhost:4000/items/${currUser.id}`)
       .then(res => res.json())
@@ -22,6 +23,9 @@ function App() {
   return (
     <div className="app-wrapper">
       <Nav />
+      <div className="signed-in">
+        You are currently signed in as {currUser.Username} with an id of {currUser.id}
+      </div>
 
       <Routes>
         <Route path='/' element={<Home />} />

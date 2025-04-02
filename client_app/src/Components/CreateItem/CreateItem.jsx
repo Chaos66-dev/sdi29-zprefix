@@ -38,7 +38,7 @@ function CreateItem({setAction}) {
     return (
         <div className="item-wrapper">
             <div className="item-actions-1">
-                <input type="text"
+                <input type="number"
                         name="userId"
                         id="userId"
                         placeholder="User Id"
@@ -58,7 +58,7 @@ function CreateItem({setAction}) {
                         placeholder="Description"
                         value={description}
                         onChange={(event) => setDescription(event.target.value)}/>
-                <input type="text"
+                <input type="number"
                         name="quantity"
                         id="quantity"
                         placeholder="Quantity"

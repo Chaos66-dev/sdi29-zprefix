@@ -48,7 +48,7 @@ server.post('/login/', async (req, res) => {
 server.get('/users/:id', async (req, res) => {
     const id = parseInt(req.params.id)
     if (isNaN(id) || id < 1) {
-        res.status(400).json({error: 'Please make this request with a valid user id'})
+        return res.status(400).json({error: 'Please make this request with a valid user id'})
     }
 
     try {
@@ -79,7 +79,7 @@ server.post('/users', async (req, res) => {
         Username == '' ||
         Password == ''
     ) {
-        res.status(400).json({error: 'Please provide values for all fields'})
+        return res.status(400).json({error: 'Please provide values for all fields'})
     }
 
     try {
@@ -100,7 +100,7 @@ server.patch('/users', async (req, res) => {
     const { FirstName, LastName, Username, Password } = req.body
     const id = parseInt(req.body.UserId)
     if (isNaN(id) || id < 1) {
-        res.status(400).json({error: 'Please provide the id of the user you want to update'})
+        return res.status(400).json({error: 'Please provide the id of the user you want to update'})
     }
     let updates = {}
     if (FirstName != '') updates.FirstName = FirstName
@@ -150,7 +150,7 @@ server.delete('/users', async (req, res) => {
 server.get('/items/:id', async (req, res) => {
     const id = parseInt(req.params.id)
     if (isNaN(id) || id < 1) {
-        res.status(400).json({error: 'Please make this request with a valid user id'})
+        return res.status(400).json({error: 'Please make this request with a valid user id'})
     }
 
     try {
@@ -188,13 +188,53 @@ server.post('/items', async (req, res) => {
         res.status(500).json(SERVER_ERROR)
     }
 })
-// Patch /items
-// Delete /items
 
-// id being the id of the user? or should it be id of the item
-// Get /items/:id
-// Post /items/:id
-// Patch /items/:id
-// Delete /items/:id
+// Patch /items
+server.patch('/items', async (req, res) => {
+    const { UserId, ItemName, Description, Quantity } = req.body
+    const id = parseInt(req.body.id)
+    if (isNaN(id) || id < 1) {
+        return res.status(400).json({error: 'Please provide the id of the item you want to update'})
+    }
+    let updates = {}
+    if (UserId) updates.UserId = UserId
+    if (ItemName != '') updates.ItemName = ItemName
+    if (Description != '') updates.Description = Description
+    if (Quantity) updates.Quantity = Quantity
+
+    try {
+        const patch = await db('items').where('id', id).update(updates)
+
+        if (patch > 0) {
+            res.status(201).json(patch)
+        } else {
+            res.status(404).json({error: 'Error patching this element'})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(SERVER_ERROR)
+    }
+})
+
+// Delete /items
+server.delete('/items', async (req, res) => {
+    const id = parseInt(req.body.id)
+    if (isNaN(id) || id < 1) {
+        return res.status(400).json({error: 'Please provide the id of the item you want to delete'})
+    }
+
+    try {
+        const del = await db('items').where('id', id).del()
+
+        if (del == 1) {
+            res.status(201).json({del})
+        } else {
+            res.status(404).json({error: 'Error deleting this item'})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(SERVER_ERROR)
+    }
+})
 
 module.exports = server
