@@ -34,7 +34,7 @@ server.post('/login/', async (req, res) => {
                                 .where('Password', psswd)
         console.log(query)
         if (query.length > 0) {
-            res.status(200).json(query)
+            res.status(201).json(query)
         } else {
             res.status(404).json({error: 'Invalid Username or Password'})
         }
@@ -86,7 +86,8 @@ server.post('/users', async (req, res) => {
         const add_user = await db('users').insert({ FirstName, LastName, Username, Password }).returning('id')
         // console.log(add_user)
         if (add_user.length > 0){
-            res.status(201).json(add_user)
+            const query = await db('users').select(['id', 'FirstName', 'LastName'])
+            res.status(201).json(query)
         } else {
             res.status(404).json({error: 'Error inserting user'})
         }
@@ -112,7 +113,8 @@ server.patch('/users', async (req, res) => {
         const patch = await db('users').where('id', id).update(updates)
 
         if (patch > 0) {
-            res.status(201).json(patch)
+            const query = await db('users').select(['id', 'FirstName', 'LastName'])
+            res.status(201).json(query)
         } else {
             res.status(404).json({error: 'Error updating this user'})
         }
@@ -134,7 +136,8 @@ server.delete('/users', async (req, res) => {
         const del = await db('users').where('id', id).del()
 
         if (del == 1) {
-            res.status(201).json(del)
+            const query = await db('users').select(['id', 'FirstName', 'LastName'])
+            res.status(201).json(query)
         } else {
             res.status(404).json({error: 'Error deleting this user'})
         }
@@ -147,19 +150,9 @@ server.delete('/users', async (req, res) => {
 // -------------------------------------------------------------------------------------------
 
 // Get /items
-server.get('/items/:id', async (req, res) => {
-    const id = parseInt(req.params.id)
-    if (isNaN(id) || id < 1) {
-        return res.status(400).json({error: 'Please make this request with a valid user id'})
-    }
-
+server.get('/items', async (req, res) => {
     try {
-        let query
-        if (id == 1) {
-            query = await db('items').select("*")
-        } else {
-            query = await db('items').select("*").where('UserId', id)
-        }
+        query = await db('items').select("*")
 
         if (query.length > 0) {
             res.status(200).json(query)
@@ -179,7 +172,8 @@ server.post('/items', async (req, res) => {
     try {
         const add_item = await db('items').insert({ UserId, ItemName, Description, Quantity }).returning('id')
         if (add_item.length > 0) {
-            res.status(201).json(add_item)
+            const query = await db('items').select("*")
+            res.status(201).json(query)
         } else {
             res.status(404).json({error: 'Error inserting this item'})
         }
@@ -206,7 +200,8 @@ server.patch('/items', async (req, res) => {
         const patch = await db('items').where('id', id).update(updates)
 
         if (patch > 0) {
-            res.status(201).json(patch)
+            const query = await db('items').select("*")
+            res.status(201).json(query)
         } else {
             res.status(404).json({error: 'Error patching this element'})
         }
@@ -227,7 +222,8 @@ server.delete('/items', async (req, res) => {
         const del = await db('items').where('id', id).del()
 
         if (del == 1) {
-            res.status(201).json({del})
+            const query = await db('items').select("*")
+            res.status(201).json(query)
         } else {
             res.status(404).json({error: 'Error deleting this item'})
         }

@@ -5,7 +5,7 @@ import InventoryContext from '../../Context/InventoryContext.jsx'
 
 function Nav() {
     const navigate = useNavigate()
-    const { setView } = useContext(InventoryContext)
+    const { setView, setCurrUser } = useContext(InventoryContext)
 
     return (
         <div className="nav-wrapper">
@@ -23,6 +23,13 @@ function Nav() {
             </div>
             <div className="login" onClick={() => navigate('/login')}>
                 Login
+            </div>
+            <div className="logout" onClick={() => {
+                setCurrUser({id: 0, Username: ''})
+                setView('all')
+                navigate('/')
+            }}>
+                Logout
             </div>
         </div>
     )

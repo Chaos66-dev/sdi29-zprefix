@@ -32,33 +32,34 @@
 
 .item-id-name {
     grid-row: 1;
-    margin: 2%;
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 2%;
     gap: 5px;
-    width: 300px;
+    width: 290px;
 }
 
 .item-description {
     grid-row: 2;
-    margin: 2%;
-    width: 300px;
+    width: 280px;
+    display: block;
+    min-width: 100%;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
 }
+
 .item-quantity {
     grid-row: 3;
-    margin: 2%;
-    width: 300px;
+    width: 280px;
 }
 .item-user {
     grid-row: 4;
-    margin: 2%;
-    width: 300px;
+    width: 280px;
 }
 
 .actions {
     grid-row: 2;
-    margin: 2%;
     display: flex;
     justify-content: center;
     align-items: center;

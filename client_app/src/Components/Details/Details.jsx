@@ -1,16 +1,21 @@
 import './Details.css'
 import { useContext, useState } from 'react'
 import InventoryContext from '../../Context/InventoryContext.jsx'
+import { useNavigate } from 'react-router-dom'
 
 function Details() {
-    const { currItem } = useContext(InventoryContext)
+    const { currItem, setView, setItems, currUser } = useContext(InventoryContext)
     const [ description, setDescription ] = useState(currItem.Description)
     const [ edit, setEdit ] = useState(false)
     const [ itmnm, setItmnm ] = useState(currItem.ItemName)
     const [ qntty, setQntty ] = useState(currItem.Quantity)
     const [ uid, setUid ] = useState(currItem.UserId)
+    const navigate = useNavigate()
 
     function handleEditClick() {
+        if (currUser.id == 0) {
+            return alert('Please sign in to perform this function')
+        }
         if (edit == false) {
             setEdit(true)
         } else {
@@ -38,6 +43,9 @@ function Details() {
     }
 
     function handleDeleteClick() {
+        if (currUser.id == 0) {
+            return alert('Please sign in to perform this function')
+        }
         fetch('http://localhost:4000/items', {
             method: "DELETE",
             headers: {
@@ -51,7 +59,11 @@ function Details() {
                 if (!res.ok) {
                     throw new Error('Error deleting this item')
                 }
+                return res.json()
+            })
+            .then(data => {
                 setView('user')
+                setItems(data)
                 navigate('/')
             })
             .catch(error => alert(error))

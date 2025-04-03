@@ -5,7 +5,7 @@ import InventoryContext from '../../Context/InventoryContext.jsx'
 
 function ItemCard({ item }) {
     const navigate = useNavigate()
-    const { setCurrItem, setView } = useContext(InventoryContext)
+    const { setCurrItem, setView, setItems, currUser } = useContext(InventoryContext)
     const [ description, setDescription ] = useState('')
     const [ edit, setEdit ] = useState(false)
     const [ itmnm, setItmnm ] = useState(item.ItemName)
@@ -20,6 +20,9 @@ function ItemCard({ item }) {
     }
 
     function handleEditClick() {
+        if (currUser.id == 0) {
+            return alert('Please sign in to perform this function')
+        }
         if (edit == false) {
             setEdit(true)
         } else {
@@ -47,6 +50,9 @@ function ItemCard({ item }) {
     }
 
     function handleDeleteClick() {
+        if (currUser.id == 0) {
+            return alert('Please sign in to perform this function')
+        }
         fetch('http://localhost:4000/items', {
             method: "DELETE",
             headers: {
@@ -60,7 +66,11 @@ function ItemCard({ item }) {
                 if (!res.ok) {
                     throw new Error('Error deleting this item')
                 }
+                return res.json()
+            })
+            .then(data => {
                 setView('user')
+                setItems(data)
                 navigate('/')
             })
             .catch(error => alert(error))
@@ -96,16 +106,18 @@ function ItemCard({ item }) {
 
                 </div>
                 <div className="item-description">
-                    {edit ?
+                    {edit ? (
                         <input type="text"
                                 name="description"
                                 id="description"
                                 placeholder='Description'
                                 value={description}
                                 onChange={(event) => setDescription(event.target.value)} />
-                    :
-                        description
-                    }
+                    ) : description.length > 100 ? (
+                            description.slice(0, 100) + "..."
+                    )   :   (
+                            description
+                    )}
                 </div>
                 <div className="item-quantity">
                     {edit ?

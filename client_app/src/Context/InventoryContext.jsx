@@ -3,7 +3,7 @@ import { createContext, useState } from 'react'
 const InventoryContext = createContext()
 
 export const InventoryContextProvider = ({children}) => {
-    const [currUser, setCurrUser] = useState({id: 1, Username: 'visitor'})
+    const [currUser, setCurrUser] = useState({id: 0, Username: ''})
     const [items, setItems] = useState([])
     const [currItem, setCurrItem] = useState({})
     const [view, setView] = useState('all')

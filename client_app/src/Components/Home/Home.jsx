@@ -6,13 +6,12 @@ import ItemActions from '../ItemActions/ItemActions.jsx'
 
 function Home() {
     const { items, setItems, view, currUser } = useContext(InventoryContext)
-    // TODO filter results to only disply user items if view is not all
 
     useEffect(() => {
-        fetch(`http://localhost:4000/items/1`)
+        fetch(`http://localhost:4000/items`)
             .then(res => res.json())
             .then(data => setItems(data))
-    }, [])
+    }, [ view ])
 
     return (
         <div>

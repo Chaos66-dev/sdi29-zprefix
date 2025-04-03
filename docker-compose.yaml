@@ -5,9 +5,9 @@ services:
     build: ./client_app
     image: inv_mgmt_client
     container_name: inv_mgmt_client_cont
-    volumes:
-      - ./client_app:/client
-      - /client/node_modules
+    # volumes:
+    #   - ./client_app:/client
+    #   - /client/node_modules
     ports:
       - 5173:5173
     depends_on:
@@ -17,9 +17,9 @@ services:
     build: ./server
     image: inv_mgmt_server
     container_name: inv_mgmt_server_cont
-    volumes:
-      - ./server:/server
-      - /server/node_modules
+    # volumes:
+    #   - ./server:/server
+    #   - /server/node_modules
     ports:
       - 4000:4000
     env_file:

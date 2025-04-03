@@ -1,5 +1,5 @@
 import './Login.css'
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import InventoryContext from '../../Context/InventoryContext.jsx'
 import { useNavigate } from 'react-router-dom'
 import CreateUser from '../CreateUser/CreateUser.jsx'
@@ -7,7 +7,7 @@ import EditUser from '../EditUser/EditUser.jsx'
 import DeleteUser from '../DeleteUser/DeleteUser.jsx'
 
 function Login() {
-    const { currUser, setCurrUser, setView } = useContext(InventoryContext)
+    const { currUser, setCurrUser, setItems, setView } = useContext(InventoryContext)
     const [usrnm, setUsrnm] = useState('')
     const [psswd, setPsswd] = useState('')
     const [action, setAction] = useState('')
@@ -25,7 +25,7 @@ function Login() {
             })
         })
             .then(res => {
-                if(res.status != 200) {
+                if(res.status != 201) {
                     throw new Error('Invalid Username or Password')
                 }
                 return res.json()
@@ -33,6 +33,7 @@ function Login() {
             .then(data => {
                 setCurrUser(data[0])
                 setView('user')
+                setItems(data)
                 navigate('/')
             })
             .catch(error => {

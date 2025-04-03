@@ -1,13 +1,20 @@
 import './CreateItem.css'
-import { useState } from 'react'
+import { useState, useContext, useEffect } from 'react'
+import InventoryContext from '../../Context/InventoryContext.jsx'
+import { useNavigate } from 'react-router-dom'
 
 function CreateItem({setAction}) {
     const [userId, setUserId] = useState('')
     const [itemName, setItemName] = useState('')
     const [description, setDescription] = useState('')
     const [quantity, setQuantity] = useState('')
+    const { setView, setItems, currUser } = useContext(InventoryContext)
+    const navigate = useNavigate()
 
     function handleCreateItem() {
+        if (currUser.id == 0) {
+            return alert('Please sign in to perform this function')
+        }
         fetch('http://localhost:4000/items', {
             method: "POST",
             headers: {
@@ -29,6 +36,9 @@ function CreateItem({setAction}) {
             .then(data => {
                 alert('Item successfully added')
                 setAction('')
+                setView('user')
+                setItems(data)
+                navigate('/')
             })
             .catch(error => {
                 console.log(error)

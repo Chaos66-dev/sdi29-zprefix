@@ -13,7 +13,7 @@ function App() {
 
 
   useEffect(() => {
-    fetch(`http://localhost:4000/items/${currUser.id}`)
+    fetch(`http://localhost:4000/items`)
       .then(res => res.json())
       .then(data => {
         setItems(data)
@@ -24,7 +24,11 @@ function App() {
     <div className="app-wrapper">
       <Nav />
       <div className="signed-in">
-        You are currently signed in as {currUser.Username} with an id of {currUser.id}
+        { currUser.id == 0 ?
+          `You are not currently signed in`
+        :
+          `You are currently signed in as ${currUser.Username} with an id of ${currUser.id}`
+        }
       </div>
 
       <Routes>

@@ -41,3 +41,14 @@
     cursor: pointer;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
 }
+
+.logout {
+    background-color: darkcyan;
+    padding: 10px;
+    border-radius: 5%;
+}
+
+.logout:hover {
+    cursor: pointer;
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+}
