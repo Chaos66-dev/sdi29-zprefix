@@ -16,7 +16,7 @@ server.get('/', (req, res) => {
     res.status(200).json({message: "I am working"})
 })
 
-// handle login get req
+// handle login post req
 server.post('/login/', async (req, res) => {
     const usrnm = req.body.username
     const psswd = req.body.password
@@ -32,7 +32,6 @@ server.post('/login/', async (req, res) => {
                                 .select('id', 'Username')
                                 .where('Username', usrnm)
                                 .where('Password', psswd)
-        console.log(query)
         if (query.length > 0) {
             res.status(201).json(query)
         } else {
@@ -84,7 +83,6 @@ server.post('/users', async (req, res) => {
 
     try {
         const add_user = await db('users').insert({ FirstName, LastName, Username, Password }).returning('id')
-        // console.log(add_user)
         if (add_user.length > 0){
             const query = await db('users').select(['id', 'FirstName', 'LastName'])
             res.status(201).json(query)

@@ -1,4 +1,3 @@
-import './DeleteUser.css'
 import { useState } from 'react'
 
 function DeleteUser({setAction}) {

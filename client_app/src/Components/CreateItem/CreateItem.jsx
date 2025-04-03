@@ -1,5 +1,4 @@
-import './CreateItem.css'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import InventoryContext from '../../Context/InventoryContext.jsx'
 import { useNavigate } from 'react-router-dom'
 
